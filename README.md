@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+## PokéSearch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+PokéSearch is a web app that allows users to search for pokémon using the PokéAPI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Search pokémon**: Users can search for pokémon by typing the name, or part of the name, into an autocomplete input.
+- **Image preloading**: Pokémon sprites are preloaded before displaying the data to improve visual performance and eliminate rendering delays caused by slow image loading.
+- **Caching mechanism**: Previously searched pokémon are cached in memory to avoid unnecessary API requests and improve application performance.
+- **Pokémon navigation**: Users can navigate between pokémon using the arrow buttons, which fetch the next or previous pokémon by ID.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**: React is used for building the user interface and enabling routing for easy navigation.
+- **TypeScript**: TypeScript is used to ensure type safety and improve developer experience.
+- **Joy UI**: Joy UI is used for styling and components.
+- **Axios**: Axios is used to make API requests.
+- **PokéAPI**: API to retrieve data about pokémon.
+- **React Icons**: React Icons are used for the pokémon navigation buttons.
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+To run the project locally:
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. Clone the repository:
+   `git clone https://github.com/thetiagogil/13-pokesearch.git`
+2. Navigate to the project directory:
+   `cd 13-pokesearch`
+3. Install dependencies:
+   `npm i`
+4. Start the app:
+   `npm run dev`
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Conclusion
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+All tasks for the project were met except for task number 5 _"Have at least two automated tests, for the two features above"_.
+
+## Contact
+
+Feel free to contact me at talmeidagil@hotmail.com with any questions or feedback.
