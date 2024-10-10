@@ -18,6 +18,8 @@ export const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [pokemonList, setPokemonList] = useState<string[]>([]);
 
+  const pokemonCache = new Map<string, Pokemon>();
+
   useEffect(() => {
     const fetchPokemonList = async () => {
       try {
@@ -29,7 +31,7 @@ export const HomePage = () => {
         );
         setPokemonList(names);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch Pokémon list");
       }
     };
 
@@ -37,21 +39,30 @@ export const HomePage = () => {
   }, []);
 
   const handleSearch = async (pokemonName: string) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
-      );
-      const img = new Image();
-      img.src = response.data.sprites.front_default;
-      img.onload = () => {
-        setPokemon(response.data);
-        setLoading(false);
-      };
-    } catch (err) {
-      console.error(err);
-      setPokemon(null);
+    const cachedPokemon = pokemonCache.get(pokemonName.toLowerCase());
+
+    if (cachedPokemon) {
+      setPokemon(cachedPokemon);
       setLoading(false);
+    } else {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
+        );
+        const pokemonData = response.data;
+        const img = new Image();
+        img.src = pokemonData.sprites.front_default;
+        img.onload = () => {
+          pokemonCache.set(pokemonName.toLowerCase(), pokemonData);
+          setPokemon(pokemonData);
+          setLoading(false);
+        };
+      } catch (err) {
+        console.error(err);
+        setPokemon(null);
+        setLoading(false);
+      }
     }
   };
 
