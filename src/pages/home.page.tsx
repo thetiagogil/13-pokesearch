@@ -38,25 +38,27 @@ export const HomePage = () => {
     fetchPokemonList();
   }, []);
 
-  const handleSearch = async (pokemonName: string) => {
-    const cachedPokemon = pokemonCache.get(pokemonName.toLowerCase());
+  const handleSearch = async (pokemonId: string) => {
+    const cachedPokemon = pokemonCache.get(pokemonId.toLowerCase());
 
     if (cachedPokemon) {
       setPokemon(cachedPokemon);
       setLoading(false);
+      setPokemonName(capFirstLetter(cachedPokemon.name));
     } else {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
+          `https://pokeapi.co/api/v2/pokemon/${pokemonId.toLowerCase()}`
         );
         const pokemonData = response.data;
         const img = new Image();
         img.src = pokemonData.sprites.front_default;
         img.onload = () => {
-          pokemonCache.set(pokemonName.toLowerCase(), pokemonData);
+          pokemonCache.set(pokemonId.toLowerCase(), pokemonData);
           setPokemon(pokemonData);
           setLoading(false);
+          setPokemonName(capFirstLetter(pokemonData.name));
         };
       } catch (err) {
         console.error(err);
@@ -73,14 +75,6 @@ export const HomePage = () => {
     }
   };
 
-  const handleSwitch = (type: string) => {
-    if (type === "previous" && pokemon && pokemon.id > 1) {
-      handleSearch((pokemon.id - 1).toString());
-    } else if (type === "next" && pokemon && pokemon.id < 1025) {
-      handleSearch((pokemon.id + 1).toString());
-    }
-  };
-
   return (
     <Stack alignItems="center">
       <Stack width={300} alignItems="center" gap={6} mt={4}>
@@ -90,7 +84,7 @@ export const HomePage = () => {
             options={pokemonList}
             value={pokemonName}
             onChange={handleSelection}
-            placeholder="Please type a pokémon name..."
+            placeholder="Please type a Pokémon name..."
             sx={{ width: "100%" }}
           />
         </Stack>
@@ -98,7 +92,7 @@ export const HomePage = () => {
         {loading ? (
           <CircularProgress />
         ) : (
-          pokemon && <Pokemon pokemon={pokemon} handleSwitch={handleSwitch} />
+          pokemon && <Pokemon pokemon={pokemon} handleSearch={handleSearch} />
         )}
       </Stack>
     </Stack>

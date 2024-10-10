@@ -13,10 +13,18 @@ type Pokemon = {
       front_default: string;
     };
   };
-  handleSwitch: (type: string) => void;
+  handleSearch: (type: string) => void;
 };
 
-export const Pokemon = ({ pokemon, handleSwitch }: Pokemon) => {
+export const Pokemon = ({ pokemon, handleSearch }: Pokemon) => {
+  const handleSwitch = (type: string) => {
+    if (type === "previous" && pokemon && pokemon.id > 1) {
+      handleSearch((pokemon.id - 1).toString());
+    } else if (type === "next" && pokemon && pokemon.id < 1025) {
+      handleSearch((pokemon.id + 1).toString());
+    }
+  };
+
   return (
     <Stack width="100%">
       <Stack component={Card} alignItems="center">
